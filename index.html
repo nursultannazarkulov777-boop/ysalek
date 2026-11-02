@@ -1,799 +1,298 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black">
-<meta name="apple-mobile-web-app-title" content="Уголёк">
-<title>Уголёк</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HISTORY 8 — История</title>
 <style>
-* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; -webkit-user-select: none; user-select: none; }
-html, body { margin: 0; padding: 0; height: 100%; background: #000; color: #fff; font-family: -apple-system, Helvetica, Arial, sans-serif; overflow: hidden; }
-#app { height: 100%; display: -webkit-flex; display: flex; -webkit-flex-direction: column; flex-direction: column; }
-#screens { -webkit-flex: 1; flex: 1; position: relative; overflow: hidden; }
-.screen { position: absolute; top: 0; left: 0; right: 0; bottom: 0; display: none; overflow-y: auto; -webkit-overflow-scrolling: touch; padding: 16px; text-align: center; }
-.screen.on { display: block; }
-#nav { display: -webkit-flex; display: flex; background: #0a0a0a; border-top: 2px solid #ff4500; }
-.tab { -webkit-flex: 1; flex: 1; padding: 12px 0; font-size: 10px; font-weight: 800; letter-spacing: 1px; color: #888; text-transform: uppercase; text-align: center; }
-.tab.on { color: #ff4500; }
-.tab i { display: block; font-style: normal; font-size: 22px; margin-bottom: 2px; }
-#clock { font-size: 8vmin; font-weight: 800; letter-spacing: 2px; margin-top: 2px; }
-#date { font-size: 14px; color: #ff6a00; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 3px; }
-#pet { position: relative; width: 44vmin; height: 44vmin; max-width: 420px; max-height: 420px; min-width: 220px; min-height: 220px; margin: 8px auto; border-radius: 50%; background: #111; border: 4px solid #ff4500; box-shadow: 0 0 24px #ff4500; display: -webkit-flex; display: flex; align-items: center; justify-content: center; }
-#pet.sleep { border-color: #555; box-shadow: 0 0 10px #333; }
-.eyes { display: -webkit-flex; display: flex; }
-.eye { width: 24%; min-width: 50px; height: 15vmin; min-height: 70px; margin: 0 3vmin; border-radius: 50%; background: #fff; position: relative; overflow: hidden; -webkit-animation: blink 4s infinite; animation: blink 4s infinite; }
-.eye:after { content: ''; position: absolute; width: 45%; height: 40%; border-radius: 50%; background: #ff4500; left: 28%; top: 38%; }
-#pet.sleep .eye { height: 6px; min-height: 6px; margin-top: 35px; -webkit-animation: none; animation: none; }
-#pet.sleep .eye:after { display: none; }
-#pet.sad .eye:after { top: 56%; }
-#pet.happy .eye:after { background: #ff9500; }
-@-webkit-keyframes blink { 0%, 92%, 100% { -webkit-transform: scaleY(1); } 96% { -webkit-transform: scaleY(0.08); } }
-@keyframes blink { 0%, 92%, 100% { transform: scaleY(1); } 96% { transform: scaleY(0.08); } }
-#mouth { position: absolute; bottom: 18%; left: 50%; width: 20%; height: 8%; margin-left: -10%; border-bottom: 5px solid #ff4500; border-radius: 0 0 60px 60px; }
-#pet.sad #mouth { border-bottom: none; border-top: 5px solid #ff4500; border-radius: 60px 60px 0 0; }
-#name { font-size: 22px; font-weight: 800; color: #ff4500; letter-spacing: 3px; margin-top: 4px; }
-#say { min-height: 54px; max-width: 420px; margin: 8px auto; font-size: 17px; line-height: 1.3; padding: 10px 14px; border: 2px solid #ff6a00; border-radius: 18px; background: #0b0b0b; }
-.bars { width: 100%; max-width: 420px; margin: 6px auto; text-align: left; }
-.bar { margin: 6px 0; }
-.bar span { font-size: 12px; color: #bbb; text-transform: uppercase; letter-spacing: 2px; }
-.track { height: 12px; border-radius: 8px; background: #1c1c1c; overflow: hidden; margin-top: 3px; }
-.fill { height: 100%; width: 100%; border-radius: 8px; background: -webkit-linear-gradient(left, #ff4500, #ff9500); background: linear-gradient(90deg, #ff4500, #ff9500); -webkit-transition: width 0.4s; transition: width 0.4s; }
-.btns { display: -webkit-flex; display: flex; width: 100%; max-width: 420px; margin: 10px auto 0; }
-.btn { -webkit-flex: 1; flex: 1; margin: 0 5px; padding: 16px 0; border: 2px solid #ff4500; border-radius: 16px; background: #000; color: #fff; font-size: 16px; font-weight: 800; text-align: center; }
-.btn:active { background: #ff4500; }
-.btn.solid { background: #ff4500; }
-.h1 { font-size: 22px; font-weight: 800; color: #ff4500; letter-spacing: 3px; text-transform: uppercase; margin: 6px 0 14px; }
-.big { font-size: 15vmin; font-weight: 800; letter-spacing: 3px; margin: 14px 0; }
-.row { display: -webkit-flex; display: flex; align-items: center; justify-content: center; max-width: 420px; margin: 8px auto; }
-.inp { background: #111; border: 2px solid #ff6a00; border-radius: 12px; color: #fff; font-size: 20px; padding: 10px; text-align: center; width: 90px; -webkit-user-select: text; user-select: text; }
-.card { max-width: 420px; margin: 8px auto; padding: 12px 14px; border: 2px solid #333; border-radius: 14px; background: #0b0b0b; display: -webkit-flex; display: flex; align-items: center; justify-content: space-between; text-align: left; }
-.card b { font-size: 24px; color: #fff; }
-.card small { color: #ff6a00; display: block; font-size: 12px; }
-.x { color: #ff4500; font-size: 22px; font-weight: 800; padding: 4px 10px; }
-.tgl { width: 52px; height: 30px; border-radius: 20px; background: #333; position: relative; }
-.tgl.on { background: #ff4500; }
-.tgl:after { content: ''; position: absolute; top: 3px; left: 3px; width: 24px; height: 24px; border-radius: 50%; background: #fff; -webkit-transition: left 0.2s; transition: left 0.2s; }
-.tgl.on:after { left: 25px; }
-#ring { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: #ff4500; z-index: 99; display: none; text-align: center; padding-top: 25vh; }
-#ring.on { display: block; -webkit-animation: flash 0.8s infinite; animation: flash 0.8s infinite; }
-#ring h1 { font-size: 12vmin; margin: 0 0 30px; color: #000; }
-@-webkit-keyframes flash { 0%, 100% { background: #ff4500; } 50% { background: #ff9500; } }
-@keyframes flash { 0%, 100% { background: #ff4500; } 50% { background: #ff9500; } }
-.note { max-width: 420px; margin: 8px auto; padding: 12px 14px; border: 2px solid #333; border-radius: 14px; background: #0b0b0b; text-align: left; display: -webkit-flex; display: flex; align-items: center; justify-content: space-between; }
-.note.done span { text-decoration: line-through; color: #666; }
-.note small { color: #ff6a00; display: block; font-size: 12px; }
-.chk { width: 28px; height: 28px; border: 2px solid #ff4500; border-radius: 8px; margin-right: 12px; -webkit-flex-shrink: 0; flex-shrink: 0; text-align: center; line-height: 24px; color: #ff4500; font-weight: 800; }
-.txt { -webkit-user-select: text; user-select: text; background: #111; border: 2px solid #ff6a00; border-radius: 12px; color: #fff; font-size: 16px; padding: 10px; width: 100%; max-width: 420px; margin: 4px auto; display: block; }
-.sub { display: -webkit-flex; display: flex; max-width: 420px; margin: 0 auto 12px; }
-.sub .btn { padding: 10px 0; font-size: 14px; }
-.sub .btn.on { background: #ff4500; }
-.lesson { max-width: 420px; margin: 6px auto; display: -webkit-flex; display: flex; align-items: center; }
-.lesson .n { width: 28px; color: #ff4500; font-weight: 800; }
-.lesson.now .n { color: #fff; }
-.lesson.now .txt { border-color: #fff; }
-#exitMenu { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.94); z-index: 98; display: none; text-align: center; padding-top: 25vh; }
-#exitMenu.on { display: block; }
-#exitMenu p { color: #bbb; font-size: 16px; margin: 0 20px 24px; }
-#wakeVid { position: fixed; width: 1px; height: 1px; opacity: 0.01; left: 0; top: 0; pointer-events: none; }
-.gm { max-width: 420px; margin: 8px auto; padding: 16px; border: 2px solid #ff4500; border-radius: 16px; background: #0b0b0b; text-align: left; }
-.gm b { font-size: 20px; color: #fff; }
-.gm small { display: block; color: #ff6a00; margin-top: 4px; }
-.gtop { display: -webkit-flex; display: flex; justify-content: space-between; align-items: center; max-width: 420px; margin: 0 auto 8px; font-size: 18px; font-weight: 800; }
-.gtop span { color: #ff4500; }
-canvas.cv { display: block; margin: 8px auto; border: 3px solid #ff4500; border-radius: 12px; background: #050505; max-width: 100%; touch-action: none; }
-.pad { display: -webkit-flex; display: flex; max-width: 420px; margin: 8px auto; }
-.pad .btn { margin: 0 4px; padding: 18px 0; font-size: 22px; }
-.mem { display: -webkit-flex; display: flex; -webkit-flex-wrap: wrap; flex-wrap: wrap; max-width: 380px; margin: 8px auto; }
-.mc { width: 22%; margin: 1.5%; padding-top: 22%; position: relative; border: 2px solid #ff4500; border-radius: 12px; background: #111; }
-.mc i { position: absolute; top: 0; left: 0; right: 0; bottom: 0; font-style: normal; font-size: 7vmin; line-height: 1; display: -webkit-flex; display: flex; align-items: center; justify-content: center; }
-.mc.up { background: #ff4500; }
-.mc.ok { background: #1c1c1c; border-color: #444; }
-.spark { position: relative; max-width: 420px; height: 55vmin; min-height: 260px; margin: 8px auto; border: 3px solid #ff4500; border-radius: 12px; background: #050505; overflow: hidden; }
-.sp { position: absolute; width: 64px; height: 64px; margin: -32px 0 0 -32px; border-radius: 50%; background: #ff9500; box-shadow: 0 0 18px #ff4500; text-align: center; line-height: 64px; font-size: 26px; }
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,sans-serif;background:#f4f7fb;color:#243047}
+header{background:#fff;padding:18px 5%;display:flex;justify-content:space-between;align-items:center;box-shadow:0 2px 12px #0001;gap:12px;flex-wrap:wrap}
+.logo{font-size:24px;font-weight:bold;color:#f07818}
+button{cursor:pointer;border:0;border-radius:10px;padding:13px 18px;font-weight:bold;font-size:14px}
+.primary{background:#f07818;color:white;width:100%}
+.primary:hover{background:#d9640b}
+nav{display:flex;gap:8px;padding:14px 5%;background:white;overflow-x:auto}
+nav button{background:#fff0e4;color:#c45b0a;white-space:nowrap}
+nav button.active{background:#f07818;color:white}
+.container{max-width:950px;width:92%;margin:25px auto}
+.card{background:white;padding:25px;border-radius:16px;margin-bottom:16px;box-shadow:0 4px 18px #1527440b;border:1px solid #e7ebf2}
+h1{font-size:30px}
+h2{font-size:23px}
+p,li{line-height:1.8;color:#566176}
+.accordion{width:100%;background:#fff2e7;color:#87400a;text-align:left;margin:6px 0;padding:17px}
+.content{display:none;padding:12px 16px}
+.content.open{display:block}
+input[type=text],input[type=tel]{width:100%;padding:14px;border:1px solid #d8deea;border-radius:9px;margin:8px 0 17px;font-size:16px}
+label.field{display:block;font-weight:bold;font-size:14px}
+.question{padding:20px 0;border-bottom:1px solid #e7ebf2}
+.answer{display:block;padding:10px;margin:8px 0;background:#f6f8fb;border-radius:8px}
+.hidden{display:none!important}
+.badge{display:inline-block;padding:7px 12px;background:#fff0e4;color:#c45b0a;border-radius:20px;font-size:12px;font-weight:bold}
+footer{text-align:center;padding:25px;color:#8791a2}
+.result{padding:20px;background:#eaf8ee;border-radius:12px;margin-top:18px}
+.error{color:#d22;margin-bottom:12px}
+@media(max-width:600px){h1{font-size:25px}.card{padding:19px}header{padding:15px}.logo{font-size:21px}}
 </style>
 </head>
 <body>
-<div id="app">
-<div id="screens">
 
-  <div class="screen on" id="s-pet">
-    <div id="clock">00:00</div>
-    <div id="date"></div>
-    <div id="pet"><div class="eyes"><div class="eye"></div><div class="eye"></div></div><div id="mouth"></div></div>
-    <div id="name">УГОЛЁК</div>
-    <div id="say">Привет! Я Уголёк.</div>
-    <div class="bars">
-      <div class="bar"><span>Сытость</span><div class="track"><div class="fill" id="fFood"></div></div></div>
-      <div class="bar"><span>Настроение</span><div class="track"><div class="fill" id="fMood"></div></div></div>
-      <div class="bar"><span>Энергия</span><div class="track"><div class="fill" id="fEnergy"></div></div></div>
-    </div>
-    <div class="btns">
-      <div class="btn" id="bFeed">Покормить</div>
-      <div class="btn" id="bPlay">Играть</div>
-      <div class="btn" id="bSleep">Спать</div>
-    </div>
-  </div>
+<section id="loginScreen" class="container" style="max-width:440px;margin-top:7vh">
+ <div class="card">
+  <div class="logo" style="text-align:center;margin-bottom:20px">HISTORY 8 📚</div>
+  <h1 style="text-align:center">Добро пожаловать!</h1>
+  <p style="text-align:center">История для 8 класса. Кыргызстан.</p>
+  <div id="error" class="error"></div>
+  <form id="loginForm">
+   <label class="field" for="first">Имя</label>
+   <input id="first" type="text" placeholder="Твоё имя" required>
+   <label class="field" for="last">Фамилия</label>
+   <input id="last" type="text" placeholder="Твоя фамилия" required>
+   <label class="field" for="phone">WhatsApp учителя</label>
+   <input id="phone" type="tel" value="+996" required>
+   <button class="primary" type="submit">Войти в систему →</button>
+  </form>
+  <p style="font-size:12px">Данные сохраняются в этом браузере.</p>
+ </div>
+</section>
 
-  <div class="screen" id="s-alarm">
-    <div class="h1">Будильник</div>
-    <div class="row">
-      <input class="inp" id="aH" type="number" min="0" max="23" value="7">
-      <span style="font-size:30px;margin:0 8px">:</span>
-      <input class="inp" id="aM" type="number" min="0" max="59" value="0">
-    </div>
-    <div class="row"><input class="inp" id="aL" type="text" placeholder="Название" style="width:240px;font-size:16px"></div>
-    <div class="btns"><div class="btn solid" id="aAdd">Добавить будильник</div></div>
-    <div id="aList" style="margin-top:16px"></div>
-  </div>
+<div id="app" class="hidden">
+<header>
+ <div class="logo">HISTORY 8 📚</div>
+ <div>Ученик: <b id="student"></b></div>
+</header>
+<nav>
+ <button class="active" data-page="home">Главная</button>
+ <button data-page="lessons">Учебные темы</button>
+ <button data-page="exam">Тест</button>
+ <button id="exit">Выйти</button>
+</nav>
 
-  <div class="screen" id="s-timer">
-    <div class="h1">Таймер</div>
-    <div class="big" id="tShow">05:00</div>
-    <div class="row">
-      <input class="inp" id="tMin" type="number" min="0" max="999" value="5">
-      <span style="margin:0 8px;color:#888">мин</span>
-      <input class="inp" id="tSec" type="number" min="0" max="59" value="0">
-      <span style="margin:0 8px;color:#888">сек</span>
-    </div>
-    <div class="btns">
-      <div class="btn solid" id="tGo">Старт</div>
-      <div class="btn" id="tReset">Сброс</div>
-    </div>
-    <div class="h1" style="margin-top:34px">Секундомер</div>
-    <div class="big" id="swShow">00:00.0</div>
-    <div class="btns">
-      <div class="btn solid" id="swGo">Старт</div>
-      <div class="btn" id="swReset">Сброс</div>
-    </div>
-  </div>
+<main id="home" class="page container">
+ <div class="card">
+  <span class="badge">ИСТОРИЯ · 8 КЛАСС</span>
+  <h1>Изучай историю — <span style="color:#f07818">понимай мир!</span></h1>
+  <p>Изучай историю Азии, Африки и Европы XVII–XIX веков. Читай материалы, запоминай важные даты и проверяй знания с помощью теста.</p>
+  <button class="primary" style="max-width:250px" onclick="openPage('lessons')">Начать обучение →</button>
+ </div>
+ <div class="card">
+  <h2>Твоя программа</h2>
+  <p>📚 10 учебных тем</p>
+  <p>📝 10 тестовых вопросов</p>
+  <p>🏆 Автоматический подсчёт баллов</p>
+ </div>
+</main>
 
-  <div class="screen" id="s-notes">
-    <div class="h1">Заметки</div>
-    <input class="txt" id="nText" type="text" placeholder="Что запомнить?">
-    <div class="row">
-      <input class="inp" id="nH" type="number" min="0" max="23" placeholder="час" style="width:80px">
-      <span style="font-size:26px;margin:0 8px">:</span>
-      <input class="inp" id="nM" type="number" min="0" max="59" placeholder="мин" style="width:80px">
-    </div>
-    <div style="color:#666;font-size:12px">Время можно не вписывать, тогда это просто заметка</div>
-    <div class="btns"><div class="btn solid" id="nAdd">Добавить</div></div>
-    <div id="nList" style="margin-top:16px"></div>
-  </div>
-
-  <div class="screen" id="s-school">
-    <div class="h1">Школа</div>
-    <div class="sub">
-      <div class="btn on" id="subL">Уроки</div>
-      <div class="btn" id="subB">Звонки</div>
-    </div>
-    <div id="schoolBox"></div>
-  </div>
-
-  <div class="screen" id="s-games">
-  <div class="h1">Игры</div>
-  <div class="gm" id="gSnake"><b>Змейка</b><small id="hiSnake">Рекорд: 0</small></div>
-  <div class="gm" id="gTetris"><b>Тетрис</b><small id="hiTetris">Рекорд: 0</small></div>
-  <div class="gm" id="gSpark"><b>Ловец искр</b><small id="hiSpark">Рекорд: 0</small></div>
-  <div class="gm" id="gMem"><b>Огненные пары</b><small id="hiMem">Лучший результат: нет</small></div>
+<main id="lessons" class="page container hidden">
+ <h1>Учебные темы 📚</h1>
+ <p>Нажми на тему, чтобы открыть материал.</p>
+ <div id="lessonList"></div>
+</main>
+[02.11.2026 23:05] Нур Нур: <main id="exam" class="page container hidden">
+ <div class="card">
+  <h1>Экзаменационный тест 📝</h1>
+  <p>Вопросы 1–5: правильный ответ +5, неправильный −5. Вопросы 6–10: правильный +10, неправильный −8. Пропуск — 0.</p>
+  <p><b>Оценки:</b> 55 и выше — 5; 30–54 — 4; 5–29 — 3; меньше 5 — 2.</p>
+  <p>Не закрывай и не переключай вкладку во время теста: это приведёт к блокировке.</p>
+  <button id="startExam" class="primary">Начать тест</button>
+ </div>
+ <form id="testForm" class="card hidden">
+  <div id="questions"></div>
+  <button class="primary" type="submit">Завершить тест</button>
+ </form>
+ <div id="result" class="card hidden"></div>
+ <div id="cheat" class="card hidden" style="background:#ffe9e9;color:#b00020"></div>
+ <div class="card">
+  <h2>Журнал результатов</h2>
+  <div id="journal"></div>
+  <button id="export" style="background:#e9edf5">Скачать журнал</button>
+  <button id="clear" style="background:#ffe6e6;color:#b00020">Очистить журнал</button>
+ </div>
+</main>
+<footer>HISTORY 8 · Образовательная платформа</footer>
 </div>
-
-<div class="screen" id="s-snake">
-  <div class="gtop"><div class="x" id="snakeBack">‹ Назад</div><div>Счёт: <span id="snakeScore">0</span></div></div>
-  <canvas class="cv" id="snakeCv" width="320" height="320"></canvas>
-  <div class="pad"><div class="btn" id="snL">◀</div><div class="btn" id="snU">▲</div><div class="btn" id="snD">▼</div><div class="btn" id="snR">▶</div></div>
-  <div class="btns"><div class="btn solid" id="snGo">Новая игра</div></div>
-</div>
-
-<div class="screen" id="s-tetris">
-  <div class="gtop"><div class="x" id="tetBack">‹ Назад</div><div>Счёт: <span id="tetScore">0</span></div></div>
-  <canvas class="cv" id="tetCv" width="240" height="400"></canvas>
-  <div class="pad"><div class="btn" id="tL">◀</div><div class="btn" id="tRot">⟳</div><div class="btn" id="tR">▶</div><div class="btn" id="tD">▼</div></div>
-  <div class="btns"><div class="btn solid" id="tetGo">Новая игра</div></div>
-</div>
-
-<div class="screen" id="s-spark">
-  <div class="gtop"><div class="x" id="sparkBack">‹ Назад</div><div>Счёт: <span id="sparkScore">0</span> · <span id="sparkTime">30</span>с</div></div>
-  <div class="spark" id="sparkArea"></div>
-  <div class="btns"><div class="btn solid" id="sparkGo">Старт</div></div>
-</div>
-
-<div class="screen" id="s-mem">
-  <div class="gtop"><div class="x" id="memBack">‹ Назад</div><div>Ходы: <span id="memMoves">0</span></div></div>
-  <div class="mem" id="memGrid"></div>
-  <div class="btns"><div class="btn solid" id="memGo">Заново</div></div>
-</div>
-
-</div>
-
-<div id="nav">
-  <div class="tab on" data-s="s-pet"><i>●</i>Уголёк</div>
-  <div class="tab" data-s="s-alarm"><i>⏰</i>Будильник</div>
-  <div class="tab" data-s="s-timer"><i>⏱</i>Таймер</div>
-  <div class="tab" data-s="s-notes"><i>✎</i>Заметки</div>
-  <div class="tab" data-s="s-school"><i>▤</i>Школа</div>
-  <div class="tab" data-s="s-games"><i>▶</i>Игры</div>
-</div>
-</div>
-
-<div id="ring"><h1>ПОДЪЁМ!</h1><div class="btns" style="margin:0 auto;max-width:300px"><div class="btn" id="ringOff" style="background:#000">Выключить</div></div></div>
-
-<div id="exitMenu">
-  <p>Меню выхода</p>
-  <div class="btns" style="margin:0 auto 14px;max-width:300px"><div class="btn solid" id="exitBack">Вернуться в Уголёк</div></div>
-  <div class="btns" style="margin:0 auto;max-width:300px"><div class="btn" id="exitKeep">Экран можно гасить: <span id="keepState">выкл</span></div></div>
-</div>
-
-<video id="wakeVid" muted playsinline webkit-playsinline loop></video>
 
 <script>
-(function () {
-  function sget(k, def) { try { var r = localStorage.getItem(k); return r ? JSON.parse(r) : def; } catch (e) { return def; } }
-  function sset(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
-  function $(id) { return document.getElementById(id); }
-  function pad(n) { return (n < 10 ? '0' : '') + n; }
-  function clamp(v) { return v < 0 ? 0 : (v > 100 ? 100 : v); }
-  function pick(a) { return a[Math.floor(Math.random() * a.length)]; }
-  function esc(t) { return String(t).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+(function(){
+"use strict";
 
-  // ---------- НАВИГАЦИЯ ----------
-  function showScreen(id) {
-    var sc = document.querySelectorAll('.screen'), i;
-    for (i = 0; i < sc.length; i++) { sc[i].className = 'screen' + (sc[i].id === id ? ' on' : ''); }
-    var tb = document.querySelectorAll('.tab');
-    for (i = 0; i < tb.length; i++) { tb[i].className = 'tab' + (tb[i].getAttribute('data-s') === id ? ' on' : ''); }
-  }
-  window.showScreen = showScreen;
-  var tabs = document.querySelectorAll('.tab'), ti;
-  for (ti = 0; ti < tabs.length; ti++) {
-    tabs[ti].onclick = (function (el) { return function () { showScreen(el.getAttribute('data-s')); }; })(tabs[ti]);
-  }
+const $=id=>document.getElementById(id);
+const USER_KEY="history8_user_v2";
+const JOURNAL_KEY="history8_journal_v2";
+let user=null,started=false,finished=false,blocked=false;
 
-  // ---------- ПИТОМЕЦ ----------
-  var KEY = 'ugolyok_v2';
-  var S = { food: 80, mood: 80, energy: 80, sleeping: false, last: new Date().getTime() };
-  var saved = sget(KEY, null);
-  if (saved) { S.food = saved.food; S.mood = saved.mood; S.energy = saved.energy; S.sleeping = saved.sleeping; S.last = saved.last; }
-  function saveS() { sset(KEY, S); }
-
-  var PHRASES = {
-    hungry: ['Живот урчит громче твоего будильника.', 'Накорми меня, и я сделаю вид, что не обижался.', 'Я не драматизирую, я просто голоден.', 'Если не покормишь, начну есть пиксели.', 'Мой желудок написал тебе заявление.'],
-    happy: ['Ты топ, и я это официально заявляю.', 'Сегодня вайб огонь, как я.', 'С тобой даже уголь теплее.', 'Если бы я мог, поставил бы тебе лайк.', 'Жизнь удалась, пока ты рядом.'],
-    bored: ['Эй, я тут один горю, поиграй со мной.', 'Я не залип, я тебя жду.', 'Скучно. Даже моргать надоело.', 'Я тут подумал: а ты случайно не забыл про меня?', 'Нажми что-нибудь, а то я начну петь.'],
-    tired: ['Батарейка на минимуме, дай поспать.', 'Глаза закрываются сами, я не виноват.', 'Ещё пять минуточек... в режиме сна.'],
-    sleep: ['Zzz... не буди, я заряжаюсь.', 'Zzz... мне снится большая миска.', 'Zzz... тссс, я в режиме экономии.'],
-    feed: ['Вкусно! Ты повар года.', 'Ням-ням. Ты спас мой день.', 'Ещё немного, и я стану шариком.'],
-    play: ['Ещё разок! Ну пожалуйста!', 'Ты играешь лучше, чем я думал.', 'Это было огонь, повторим?'],
-    wake: ['О, уже утро? Я готов жечь.', 'Проснулся. Мир, держись.'],
-    joke: ['Если у тебя плохой день, у меня есть угли. Не помогает, но красиво.', 'Я бы пошёл за тобой куда угодно, но у меня нет ног.', 'Только что хотел сказать что-то умное. Потом вспомнил, что я уголёк.', 'Ты знаешь, что я каждые четыре секунды моргаю? Теперь тоже будешь следить.', 'Тетрис учит главному: если всё ломается, ломай ряд целиком.', 'Говорят, сон это полезно. Я проверил: да, но будильник побеждает.', 'Мне кажется, или ты стал умнее? А, нет, показалось.', 'Если съесть много, станешь большим. Я пробовал. Теперь я круглый.', 'Давай на спор: ты сегодня сделаешь одно дело, которое откладывал.', 'Твой телефон разряжается быстрее, чем моя вера в понедельник.', 'Я могу быть твоим будильником, но мне больше нравится быть твоим другом.', 'Не обижайся, но тебе пора выпить воды. Я проверил, угли без воды не живут.', 'Пока ты тут, давай я напомню: ты молодец. Просто так.', 'Если бы я мог выйти из экрана, я бы тебя обнял. Но лучше тапни.', 'Признаюсь, я немного разочарован: ты ещё не побил мой рекорд в змейке.', 'Не знаю, как у тебя, а у меня сегодня настроение «гори, но не сгорай».', 'Тссс, это секретная фраза. Никому не рассказывай.', 'Сделай глубокий вдох. Теперь выдох. Всё, ты уже лучше меня в йоге.', 'Мой любимый цвет всё ещё оранжевый. Но чёрный тоже ничего.', 'Если ты это читаешь, значит, я работаю. А значит, всё хорошо.', 'Хочешь анекдот? Урок математики. Всё, смешнее у меня нет.', 'Сегодня отличный день, чтобы поиграть. Любой день отличный, если честно.', 'Ты когда последний раз смеялся? Давай исправим, жми «Играть».', 'Хорошая новость: я никуда не ухожу. Плохая: я никуда и не могу.', 'Слышал, школьное расписание опять поменяли. Сочувствую и записываю.', 'Если ты что-то забыл, возможно, это есть в заметках. Загляни.', 'Знаешь, чем я занимаюсь, пока ты уходишь? Скучаю. И моргаю.', 'Мой тебе совет: делай перерывы. Мой тебе второй совет: корми меня.', 'Ты не один горишь на этом свете. Я тоже.', 'Вот бы у меня был лук. Или хотя бы чипсы.', 'Знаешь, почему я чёрный? Чтобы ты не видел, как я краснею.', 'Ты сегодня выглядишь как человек, который сделает все дела. Ну или хотя бы один.', 'Я бы дал совет, но у меня только угли.', 'Домашка сама себя не сделает. Проверял, не делает.', 'Спорим, ты сейчас моргнёшь? Ага, я так и знал.']
-  };
-  var petEl = $('pet'), sayEl = $('say');
-  function say(t) { sayEl.innerHTML = t; }
-  function render() {
-    $('fFood').style.width = S.food + '%';
-    $('fMood').style.width = S.mood + '%';
-    $('fEnergy').style.width = S.energy + '%';
-    var cls = '';
-    if (S.sleeping) { cls = 'sleep'; } else if (S.food < 30 || S.mood < 30) { cls = 'sad'; } else if (S.mood > 70 && S.food > 50) { cls = 'happy'; }
-    petEl.className = cls;
-    $('bSleep').innerHTML = S.sleeping ? 'Разбудить' : 'Спать';
-  }
-  function tick(min) {
-    if (S.sleeping) { S.energy = clamp(S.energy + min * 1.5); S.food = clamp(S.food - min * 0.1); }
-    else { S.food = clamp(S.food - min * 0.3); S.mood = clamp(S.mood - min * 0.2); S.energy = clamp(S.energy - min * 0.2); }
-    if (S.food < 10) { S.food = 10; }
-  }
-  var nowT = new Date().getTime(), gone = (nowT - S.last) / 60000;
-  if (gone > 480) { gone = 480; }
-  if (gone > 0) { tick(gone * 0.5); }
-  S.last = nowT;
-  function moodPhrase() {
-    if (S.sleeping) { return pick(PHRASES.sleep); }
-    if (S.food < 30) { return pick(PHRASES.hungry); }
-    if (S.energy < 25) { return pick(PHRASES.tired); }
-    if (S.mood < 40) { return pick(PHRASES.bored); }
-    if (Math.random() < 0.3) { return pick(PHRASES.joke); }
-    return pick(PHRASES.happy);
-  }
-  $('bFeed').onclick = function () {
-    if (S.sleeping) { say(pick(PHRASES.sleep)); return; }
-    S.food = clamp(S.food + 25); S.mood = clamp(S.mood + 5); say(pick(PHRASES.feed)); saveS(); render();
-  };
-  $('bPlay').onclick = function () {
-    if (S.sleeping) { say(pick(PHRASES.sleep)); return; }
-    if (S.energy < 15) { say(pick(PHRASES.tired)); return; }
-    S.mood = clamp(S.mood + 20); S.energy = clamp(S.energy - 10); S.food = clamp(S.food - 5);
-    say(pick(PHRASES.play)); saveS(); render();
-  };
-  $('bSleep').onclick = function () {
-    S.sleeping = !S.sleeping; say(S.sleeping ? pick(PHRASES.sleep) : pick(PHRASES.wake)); saveS(); render();
-  };
-  window.petReward = function (points) {
-    S.mood = clamp(S.mood + points); S.energy = clamp(S.energy - 5); saveS(); render();
-  };
-
-  // ---------- ЧАСЫ ----------
-  var DAYS = ['воскресенье', 'понедельник', 'вторник', 'среда', 'четверг', 'пятница', 'суббота'];
-  var MONTHS = ['января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря'];
-  function updateClock() {
-    var d = new Date();
-    $('clock').innerHTML = pad(d.getHours()) + ':' + pad(d.getMinutes());
-    $('date').innerHTML = DAYS[d.getDay()] + ', ' + d.getDate() + ' ' + MONTHS[d.getMonth()];
-  }
-
-  // ---------- БУДИЛЬНИК ----------
-  var alarms = sget('ugolyok_alarms', []);
-  var lastFired = '';
-  function saveA() { sset('ugolyok_alarms', alarms); }
-  function renderAlarms() {
-    var html = '', i, a;
-    for (i = 0; i < alarms.length; i++) {
-      a = alarms[i];
-      html += '<div class="card"><div><b>' + pad(a.h) + ':' + pad(a.m) + '</b><small>' + esc(a.label || 'Будильник') + '</small></div>' +
-        '<div style="display:flex;align-items:center"><div class="tgl' + (a.on ? ' on' : '') + '" onclick="window.alarmToggle(' + i + ')"></div>' +
-        '<div class="x" onclick="window.alarmDel(' + i + ')">×</div></div></div>';
-    }
-    if (!alarms.length) { html = '<div style="color:#666;margin-top:20px">Будильников пока нет</div>'; }
-    $('aList').innerHTML = html;
-  }
-  window.alarmToggle = function (i) { alarms[i].on = !alarms[i].on; saveA(); renderAlarms(); };
-  window.alarmDel = function (i) { alarms.splice(i, 1); saveA(); renderAlarms(); };
-  $('aAdd').onclick = function () {
-    var h = parseInt($('aH').value, 10), m = parseInt($('aM').value, 10);
-    if (isNaN(h) || h < 0 || h > 23) { h = 7; }
-    if (isNaN(m) || m < 0 || m > 59) { m = 0; }
-    alarms.push({ h: h, m: m, label: $('aL').value, on: true });
-    $('aL').value = ''; saveA(); renderAlarms();
-  };
-
-  var actx = null, beepTimer = null;
-  function unlockAudio() {
-    try {
-      var AC = window.AudioContext || window.webkitAudioContext;
-      if (AC && !actx) { actx = new AC(); }
-      if (actx && actx.state === 'suspended') { actx.resume(); }
-    } catch (e) {}
-  }
-  document.addEventListener('touchstart', unlockAudio, false);
-  document.addEventListener('click', unlockAudio, false);
-  function beep() {
-    if (!actx) { return; }
-    try {
-      var o = actx.createOscillator(), g = actx.createGain();
-      o.type = 'square'; o.frequency.value = 880; g.gain.value = 0.15;
-      o.connect(g); g.connect(actx.destination);
-      o.start(0); o.stop(actx.currentTime + 0.25);
-    } catch (e) {}
-  }
-  function startRing(title) {
-    $('ring').getElementsByTagName('h1')[0].innerHTML = title;
-    $('ring').className = 'on';
-    if (beepTimer) { clearInterval(beepTimer); }
-    beep(); beepTimer = setInterval(beep, 600);
-    if (navigator.vibrate) { try { navigator.vibrate([400, 200, 400]); } catch (e) {} }
-  }
-  window.startRing = startRing;
-  $('ringOff').onclick = function () {
-    $('ring').className = '';
-    if (beepTimer) { clearInterval(beepTimer); beepTimer = null; }
-  };
-  function checkAlarms() {
-    var d = new Date(), stamp = d.getFullYear() + '-' + d.getMonth() + '-' + d.getDate() + '-' + d.getHours() + '-' + d.getMinutes(), i, a;
-    if (stamp === lastFired) { return; }
-    for (i = 0; i < alarms.length; i++) {
-      a = alarms[i];
-      if (a.on && a.h === d.getHours() && a.m === d.getMinutes()) {
-        lastFired = stamp; startRing(esc(a.label || 'ПОДЪЁМ!')); return;
-      }
-    }
-  }
-
-  // ---------- ТАЙМЕР ----------
-  var tLeft = 300, tRun = false, tEnd = 0, tInt = null;
-  function showT() { var m = Math.floor(tLeft / 60), s = tLeft % 60; $('tShow').innerHTML = pad(m) + ':' + pad(s); }
-  function readT() {
-    var m = parseInt($('tMin').value, 10), s = parseInt($('tSec').value, 10);
-    if (isNaN(m)) { m = 0; } if (isNaN(s)) { s = 0; }
-    tLeft = m * 60 + s; showT();
-  }
-  $('tMin').onchange = function () { if (!tRun) { readT(); } };
-  $('tSec').onchange = function () { if (!tRun) { readT(); } };
-  $('tGo').onclick = function () {
-    if (tRun) { tRun = false; clearInterval(tInt); $('tGo').innerHTML = 'Старт'; return; }
-    if (tLeft <= 0) { readT(); }
-    if (tLeft <= 0) { return; }
-    tRun = true; tEnd = new Date().getTime() + tLeft * 1000; $('tGo').innerHTML = 'Пауза';
-    tInt = setInterval(function () {
-      tLeft = Math.max(0, Math.round((tEnd - new Date().getTime()) / 1000)); showT();
-      if (tLeft <= 0) { tRun = false; clearInterval(tInt); $('tGo').innerHTML = 'Старт'; startRing('ТАЙМЕР!'); }
-    }, 250);
-  };
-  $('tReset').onclick = function () { tRun = false; clearInterval(tInt); $('tGo').innerHTML = 'Старт'; readT(); };
-  readT();
-
-  // ---------- СЕКУНДОМЕР ----------
-  var swRun = false, swStart = 0, swAcc = 0, swInt = null;
-  function showSW(ms) {
-    var t = Math.floor(ms / 100), tenth = t % 10, sec = Math.floor(t / 10) % 60, min = Math.floor(t / 600);
-    $('swShow').innerHTML = pad(min) + ':' + pad(sec) + '.' + tenth;
-  }
-  $('swGo').onclick = function () {
-    if (swRun) { swRun = false; swAcc += new Date().getTime() - swStart; clearInterval(swInt); $('swGo').innerHTML = 'Старт'; return; }
-    swRun = true; swStart = new Date().getTime(); $('swGo').innerHTML = 'Стоп';
-    swInt = setInterval(function () { showSW(swAcc + new Date().getTime() - swStart); }, 100);
-  };
-  $('swReset').onclick = function () { swRun = false; clearInterval(swInt); swAcc = 0; $('swGo').innerHTML = 'Старт'; showSW(0); };
-
-  // ---------- ЗАМЕТКИ И НАПОМИНАНИЯ ----------
-  var notes = sget('ugolyok_notes', []);
-  function saveN() { sset('ugolyok_notes', notes); }
-  function renderNotes() {
-    var html = '', i, n;
-    for (i = 0; i < notes.length; i++) {
-      n = notes[i];
-      html += '<div class="note' + (n.done ? ' done' : '') + '"><div style="display:flex;align-items:center">' +
-        '<div class="chk" onclick="window.noteDone(' + i + ')">' + (n.done ? '✓' : '') + '</div>' +
-        '<div><span>' + esc(n.text) + '</span>' + (n.h !== null ? '<small>напомнить в ' + pad(n.h) + ':' + pad(n.m) + '</small>' : '') + '</div></div>' +
-        '<div class="x" onclick="window.noteDel(' + i + ')">×</div></div>';
-    }
-    if (!notes.length) { html = '<div style="color:#666;margin-top:20px">Заметок пока нет</div>'; }
-    $('nList').innerHTML = html;
-  }
-  window.noteDone = function (i) { notes[i].done = !notes[i].done; saveN(); renderNotes(); };
-  window.noteDel = function (i) { notes.splice(i, 1); saveN(); renderNotes(); };
-  $('nAdd').onclick = function () {
-    var t = $('nText').value, h = parseInt($('nH').value, 10), m = parseInt($('nM').value, 10);
-    if (!t) { return; }
-    if (isNaN(h) || h < 0 || h > 23 || isNaN(m) || m < 0 || m > 59) { h = null; m = null; }
-    notes.push({ text: t, h: h, m: m, done: false, fired: '' });
-    $('nText').value = ''; $('nH').value = ''; $('nM').value = ''; saveN(); renderNotes();
-  };
-  function checkNotes() {
-    var d = new Date(), stamp = d.getFullYear() + '-' + d.getMonth() + '-' + d.getDate(), i, n;
-    for (i = 0; i < notes.length; i++) {
-      n = notes[i];
-      if (n.h !== null && !n.done && n.fired !== stamp && n.h === d.getHours() && n.m === d.getMinutes()) {
-        n.fired = stamp; saveN(); startRing(esc(n.text)); return;
-      }
-    }
-  }
-
-  // ---------- ШКОЛА: УРОКИ И ЗВОНКИ ----------
-  var lessons = sget('ugolyok_lessons', ['', '', '', '', '', '', '', '']);
-  var bells = sget('ugolyok_bells', ['', '', '', '', '', '', '', '']);
-  var subMode = 'L';
-  function toMin(s) {
-    var p = String(s).split(/[:.\-]/);
-    if (p.length < 2) { return -1; }
-    var h = parseInt(p[0], 10), m = parseInt(p[1], 10);
-    if (isNaN(h) || isNaN(m)) { return -1; }
-    return h * 60 + m;
-  }
-  function renderSchool() {
-    var html = '', i, arr = subMode === 'L' ? lessons : bells, now = new Date(), cur = now.getHours() * 60 + now.getMinutes(), cls, parts;
-    $('subL').className = 'btn' + (subMode === 'L' ? ' on' : '');
-    $('subB').className = 'btn' + (subMode === 'B' ? ' on' : '');
-    for (i = 0; i < arr.length; i++) {
-      cls = 'lesson';
-      if (subMode === 'B') {
-        parts = String(arr[i]).split(/\s*-\s*/);
-        if (parts.length === 2 && toMin(parts[0]) >= 0 && toMin(parts[1]) >= 0 && cur >= toMin(parts[0]) && cur < toMin(parts[1])) { cls += ' now'; }
-      }
-      html += '<div class="' + cls + '"><div class="n">' + (i + 1) + '</div>' +
-        '<input class="txt" style="max-width:none" type="text" placeholder="' + (subMode === 'B' ? '8:30-9:15' : 'Предмет') + '" value="' + esc(arr[i]) + '" ' +
-        'onchange="window.schoolSet(' + i + ', this.value)"></div>';
-    }
-    html += '<div class="btns"><div class="btn" onclick="window.schoolAdd()">+ строка</div><div class="btn" onclick="window.schoolClear()">Очистить</div></div>';
-    $('schoolBox').innerHTML = html;
-  }
-  window.schoolSet = function (i, v) {
-    if (subMode === 'L') { lessons[i] = v; sset('ugolyok_lessons', lessons); } else { bells[i] = v; sset('ugolyok_bells', bells); }
-  };
-  window.schoolAdd = function () {
-    if (subMode === 'L') { lessons.push(''); sset('ugolyok_lessons', lessons); } else { bells.push(''); sset('ugolyok_bells', bells); }
-    renderSchool();
-  };
-  window.schoolClear = function () {
-    if (subMode === 'L') { lessons = ['', '', '', '', '', '', '', '']; sset('ugolyok_lessons', lessons); }
-    else { bells = ['', '', '', '', '', '', '', '']; sset('ugolyok_bells', bells); }
-    renderSchool();
-  };
-  $('subL').onclick = function () { subMode = 'L'; renderSchool(); };
-  $('subB').onclick = function () { subMode = 'B'; renderSchool(); };
-
-  // ---------- РЕЖИМ «НЕ ГАСНУТЬ» И ВЫХОД ----------
-  var keepAwake = sget('ugolyok_keep', true);
-  var vid = $('wakeVid'), vidOn = false;
-  function startWake() {
-    if (vidOn) { return; }
-    try {
-      vid.src = 'data:video/mp4;base64,AAAAIGZ0eXBpc29tAAACAGlzb21pc28yYXZjMW1wNDEAAAAIZnJlZQAAAr1tZGF0AAACrgYF//+q3EXpvebZSLeWLNgg2SPu73gyNjQgLSBjb3JlIDE1NSByMjkwMSA3ZDBmZjIyIC0gSC4yNjQvTVBFRy00IEFWQyBjb2RlYyAtIENvcHlsZWZ0IDIwMDMtMjAxOCAtIGh0dHA6Ly93d3cudmlkZW9sYW4ub3JnL3gyNjQuaHRtbA==';
-      var p = vid.play();
-      if (p && p.catch) { p.catch(function () {}); }
-      vidOn = true;
-    } catch (e) {}
-  }
-  function stopWake() { try { vid.pause(); } catch (e) {} vidOn = false; }
-  function applyKeep() {
-    $('keepState').innerHTML = keepAwake ? 'выкл' : 'вкл';
-    if (keepAwake) { startWake(); } else { stopWake(); }
-  }
-  function firstTouch() { if (keepAwake) { startWake(); } }
-  document.addEventListener('touchstart', firstTouch, false);
-  document.addEventListener('click', firstTouch, false);
-  var taps = 0, tapTimer = null;
-  $('name').onclick = function () {
-    taps++;
-    if (tapTimer) { clearTimeout(tapTimer); }
-    tapTimer = setTimeout(function () { taps = 0; }, 2500);
-    if (taps >= 5) { taps = 0; $('exitMenu').className = 'on'; }
-  };
-  $('exitBack').onclick = function () { $('exitMenu').className = ''; };
-  $('exitKeep').onclick = function () { keepAwake = !keepAwake; sset('ugolyok_keep', keepAwake); applyKeep(); };
-// ---------- ИГРЫ ----------
-var hi = sget('ugolyok_hi', { snake: 0, tetris: 0, spark: 0, mem: 0 });
-function saveHi() { sset('ugolyok_hi', hi); }
-function showHi() {
-  $('hiSnake').innerHTML = 'Рекорд: ' + hi.snake;
-  $('hiTetris').innerHTML = 'Рекорд: ' + hi.tetris;
-  $('hiSpark').innerHTML = 'Рекорд: ' + hi.spark;
-  $('hiMem').innerHTML = hi.mem ? 'Лучший результат: ' + hi.mem + ' ходов' : 'Лучший результат: нет';
-}
-function gameStop() { snStop(); tetStop(); sparkStop(); }
-function openGame(id) { gameStop(); showScreen(id); }
-function toGames() { gameStop(); showScreen('s-games'); showHi(); }
-
-// Свайпы на холсте
-function swipe(el, cb) {
-  var sx = 0, sy = 0;
-  el.addEventListener('touchstart', function (e) { var t = e.touches[0]; sx = t.clientX; sy = t.clientY; }, false);
-  el.addEventListener('touchend', function (e) {
-    var t = e.changedTouches[0], dx = t.clientX - sx, dy = t.clientY - sy;
-    if (Math.abs(dx) < 20 && Math.abs(dy) < 20) { cb('tap'); return; }
-    if (Math.abs(dx) > Math.abs(dy)) { cb(dx > 0 ? 'R' : 'L'); } else { cb(dy > 0 ? 'D' : 'U'); }
-  }, false);
-  el.addEventListener('touchmove', function (e) { e.preventDefault(); }, false);
-}
-
-// ----- ЗМЕЙКА -----
-var snCv = $('snakeCv'), snCtx = snCv.getContext('2d'), SN = 16, SNW = 20;
-var snake, snDir, snNext, snFood, snScore, snTimer = null, snAlive = false;
-function snFoodPlace() {
-  var x, y, ok;
-  do { x = Math.floor(Math.random() * SNW); y = Math.floor(Math.random() * SNW); ok = true;
-    for (var i = 0; i < snake.length; i++) { if (snake[i].x === x && snake[i].y === y) { ok = false; } }
-  } while (!ok);
-  snFood = { x: x, y: y };
-}
-function snDraw() {
-  snCtx.fillStyle = '#050505'; snCtx.fillRect(0, 0, 320, 320);
-  snCtx.fillStyle = '#ff9500'; snCtx.fillRect(snFood.x * SN + 2, snFood.y * SN + 2, SN - 4, SN - 4);
-  for (var i = 0; i < snake.length; i++) {
-    snCtx.fillStyle = i === 0 ? '#fff' : '#ff4500';
-    snCtx.fillRect(snake[i].x * SN + 1, snake[i].y * SN + 1, SN - 2, SN - 2);
-  }
-}
-function snStop() { if (snTimer) { clearInterval(snTimer); snTimer = null; } snAlive = false; }
-function snStart() {
-  snStop();
-  snake = [{ x: 10, y: 10 }, { x: 9, y: 10 }, { x: 8, y: 10 }];
-  snDir = { x: 1, y: 0 }; snNext = snDir; snScore = 0; snAlive = true;
-  $('snakeScore').innerHTML = '0'; snFoodPlace(); snDraw();
-  snTimer = setInterval(snStep, 140);
-}
-function snStep() {
-  if (!snAlive) { return; }
-  snDir = snNext;
-  var hx = snake[0].x + snDir.x, hy = snake[0].y + snDir.y, i;
-  if (hx < 0 || hy < 0 || hx >= SNW || hy >= SNW) { return snEnd(); }
-  for (i = 0; i < snake.length - 1; i++) { if (snake[i].x === hx && snake[i].y === hy) { return snEnd(); } }
-  snake.unshift({ x: hx, y: hy });
-  if (hx === snFood.x && hy === snFood.y) { snScore++; $('snakeScore').innerHTML = snScore; snFoodPlace(); }
-  else { snake.pop(); }
-  snDraw();
-}
-function snEnd() {
-  snStop();
-  if (snScore > hi.snake) { hi.snake = snScore; saveHi(); }
-  window.petReward(Math.min(25, 5 + snScore * 2));
-  snCtx.fillStyle = 'rgba(0,0,0,0.7)'; snCtx.fillRect(0, 0, 320, 320);
-  snCtx.fillStyle = '#ff4500'; snCtx.font = 'bold 28px Helvetica'; snCtx.textAlign = 'center';
-  snCtx.fillText('Конец! Счёт ' + snScore, 160, 165);
-}
-function snTurn(d) {
-  var v = { L: { x: -1, y: 0 }, R: { x: 1, y: 0 }, U: { x: 0, y: -1 }, D: { x: 0, y: 1 } }[d];
-  if (!v || !snAlive) { return; }
-  if (v.x + snDir.x === 0 && v.y + snDir.y === 0) { return; }
-  snNext = v;
-}
-$('snL').onclick = function () { snTurn('L'); };
-$('snR').onclick = function () { snTurn('R'); };
-$('snU').onclick = function () { snTurn('U'); };
-$('snD').onclick = function () { snTurn('D'); };
-$('snGo').onclick = snStart;
-swipe(snCv, function (d) { if (d !== 'tap') { snTurn(d); } });
-$('snakeBack').onclick = toGames;
-$('gSnake').onclick = function () { openGame('s-snake'); snStart(); };
-
-// ----- ТЕТРИС -----
-var tCv = $('tetCv'), tCtx = tCv.getContext('2d'), TB = 20, TW = 12, TH = 20;
-var SHAPES = [
-  [[1, 1, 1, 1]], [[1, 1], [1, 1]], [[0, 1, 0], [1, 1, 1]],
-  [[0, 1, 1], [1, 1, 0]], [[1, 1, 0], [0, 1, 1]], [[1, 0, 0], [1, 1, 1]], [[0, 0, 1], [1, 1, 1]]
+const lessons=[
+["Китай в XVII–XIX веках",`<h3>Династия Цин</h3><p>В 1644 году в Китае утвердилась маньчжурская династия Цин. Она правила до 1912 года. Государством управлял император, а чиновники опирались на традиции конфуцианства. В первые десятилетия правления территория империи расширилась.</p><h3>Изоляция</h3><p>Власти ограничивали иностранную торговлю и влияние европейцев. Основная торговля с иностранцами была сосредоточена в Гуанчжоу. Однако полностью от внешнего мира Китай изолирован не был.</p><h3>Опиумные войны</h3><p>В 1839–1842 годах произошла Первая Опиумная война между Китаем и Великобританией. После поражения Китай подписал Нанкинский договор 1842 года, открыл ряд портов для торговли и уступил Великобритании Гонконг. Вторая Опиумная война продолжалась в 1856–1860 годах. Великобритания и Франция добились новых уступок. В результате усилилось иностранное влияние и ослабла династия Цин.</p>`],
+["Индия в XVII–XIX веках",`<h3>Великие Моголы</h3><p>В XVII веке значительная часть Индии входила в империю Великих Моголов. При Аурангзебе (1658–1707) территория государства достигла больших размеров, но войны и внутренние противоречия ослабляли империю.</p><h3>Ост-Индская компания</h3><p>Английская Ост-Индская компания была создана в 1600 году для торговли. Постепенно она стала захватывать территории. В 1757 году англичане победили в битве при Плесси и укрепили влияние в Бенгалии.</p><h3>Восстание сипаев</h3><p>Восстание индийских солдат-сипаев началось в 1857 году. Его причинами стали колониальное угнетение, вмешательство в местные обычаи и недовольство политикой британцев. Восстание было подавлено в 1858 году. Управление Индией перешло непосредственно к британской короне.</p>`],
+["Япония в XVII–XIX веках",`<h3>Сёгунат Токугава</h3><p>В 1603 году Токугава Иэясу стал сёгуном. Реальная власть находилась у сёгуна, хотя император сохранял высокий символический статус. Столицей правительства был город Эдо, современный Токио.</p><h3>Эпоха Эдо и Сакоку</h3><p>Период 1603–1868 годов называется эпохой Эдо. Развивались города, торговля, образование и искусство. Политика Сакоку ограничивала контакты с иностранцами. Однако ограниченная торговля сохранялась, в частности в Нагасаки.</p><h3>Открытие Японии</h3><p>В 1853 году американская эскадра Мэттью Перри прибыла к японским берегам. Под давлением США Япония начала открывать порты для иностранной торговли.</p>`],
+["Япония в конце XIX — начале XX века",`<h3>Реставрация Мэйдзи</h3><p>В 1868 году произошла реставрация Мэйдзи: власть сёгуната закончилась, а император стал центром новой политической системы. Муцухито правил в 1867–1912 годах.</p><h3>Реформы</h3><p>Япония создала современную армию, развивала школы, железные дороги, фабрики и промышленность. Правительство изучало опыт европейских стран и США.
+[02.11.2026 23:05] Нур Нур: В 1889 году была принята конституция, а в 1890 году собрался парламент.</p><h3>Итоги</h3><p>К началу XX века Япония превратилась в современную промышленную державу и усилила влияние в Восточной Азии.</p>`],
+["Повторение стран Азии",`<h3>Китай</h3><p>Династия Цин правила с 1644 года. Опиумные войны XIX века усилили зависимость Китая от иностранных держав.</p><h3>Индия</h3><p>Империя Великих Моголов ослабла. Ост-Индская компания расширила власть, а после восстания сипаев Индия перешла под управление британской короны.</p><h3>Япония</h3><p>В эпоху Эдо страной фактически управляли сёгуны. После реставрации Мэйдзи 1868 года началась модернизация.</p><h3>Главное сравнение</h3><p>Китай и Индия столкнулись с сильным иностранным вмешательством, тогда как Япония провела реформы и смогла сохранить самостоятельность в период модернизации.</p>`],
+["Иран (Персия) в XVII–XIX веках",`<h3>Сефевиды</h3><p>В XVII веке Персией правила династия Сефевидов. При шахе Аббасе I государство укрепилось, а Исфахан стал важным культурным и торговым центром. В 1722 году Исфахан захватили афганские войска.</p><h3>Каджары</h3><p>В конце XVIII века к власти пришли Каджары. В XIX веке Персия вела войны с Россией. Гюлистанский договор был заключён в 1813 году, Туркманчайский — в 1828 году.</p><h3>Сферы влияния</h3><p>Россия и Великобритания соперничали за влияние в Персии. Англо-русское соглашение 1907 года разграничило сферы влияния этих держав, ограничив самостоятельность страны.</p>`],
+["Арабские страны в XVII–XIX веках",`<h3>Османская империя</h3><p>Значительные арабские территории, включая Сирию и Ирак, находились под властью Османской империи. В XIX веке империя испытывала внутренние трудности и давление европейских держав.</p><h3>Мухаммед Али</h3><p>Мухаммед Али стал правителем Египта в 1805 году. Он реформировал армию, управление и хозяйство, развивал промышленность и сельское хозяйство.</p><h3>Суэцкий канал</h3><p>Строительство канала началось в 1859 году, а открытие состоялось в 1869 году. Канал соединил Средиземное и Красное моря, сократив морской путь между Европой и Азией.</p>`],
+["Государства Африки в XVII–XIX веках",`<h3>Африканские общества</h3><p>В Африке существовали многочисленные государства и королевства со своими политическими системами, культурой и торговыми связями.</p><h3>Работорговля</h3><p>Атлантическая работорговля привела к насильственному вывозу миллионов африканцев в Америку. Это разрушало семьи и общества. В XIX веке многие государства запретили работорговлю, хотя она продолжалась нелегально.</p><h3>Битва при Адуа</h3><p>1 марта 1896 года эфиопская армия императора Менелика II победила итальянские войска при Адуа. Эта победа помогла Эфиопии сохранить независимость и стала символом сопротивления колониализму.</p>`],
+["Традиционная культура Европы",`<h3>Просвещение</h3><p>В XVII–XVIII веках мыслители выступали за разум, образование, науку и права человека. Среди известных представителей — Вольтер, Руссо, Монтескьё и Дидро.</p><h3>Барокко</h3><p>Барокко — стиль искусства XVII века, для которого характерны пышность, выразительность, сложные формы и богатые украшения.</p><h3>Классицизм</h3><p>Классицизм ориентировался на искусство Древней Греции и Рима. Его отличают симметрия, порядок, гармония и ясность. Эти направления оказали влияние на архитектуру, живопись, литературу и музыку.</p>`],
+["Наука и техника в XVII–XIX веках",`<h3>Научная революция</h3><p>В XVII веке учёные всё шире применяли наблюдения и эксперименты. Галилей развивал астрономию и физику, а Ньютон сформулировал законы механики и всемирного тяготения.</p><h3>Джеймс Уатт</h3><p>Шотландский инженер Джеймс Уатт усовершенствовал паровую машину в XVIII веке. Это сделало её более эффективной и пригодной для широкого применения.</p><h3>Промышленный переворот</h3><p>Промышленный переворот начался в Великобритании во второй половине XVIII века. Машинное производство заменяло ручной труд, росли фабрики и города, развивались железные дороги и торговля.</p>`]
 ];
-var COLORS = ['#ff4500', '#ff9500', '#ffffff', '#ff2d55', '#ffb000', '#ff6a00', '#e0e0e0'];
-var tBoard, tPiece, tX, tY, tCol, tScore, tTimer = null, tAlive = false;
-function tNewBoard() { var b = [], y, x; for (y = 0; y < TH; y++) { b.push([]); for (x = 0; x < TW; x++) { b[y].push(0); } } return b; }
-function tCollide(m, px, py) {
-  var y, x, bx, by;
-  for (y = 0; y < m.length; y++) { for (x = 0; x < m[y].length; x++) {
-    if (m[y][x]) { bx = px + x; by = py + y;
-      if (bx < 0 || bx >= TW || by >= TH) { return true; }
-      if (by >= 0 && tBoard[by][bx]) { return true; } } } }
-  return false;
-}
-function tRotate(m) {
-  var r = [], x, y;
-  for (x = 0; x < m[0].length; x++) { r.push([]); for (y = m.length - 1; y >= 0; y--) { r[x].push(m[y][x]); } }
-  return r;
-}
-function tSpawn() {
-  var n = Math.floor(Math.random() * SHAPES.length);
-  tPiece = SHAPES[n]; tCol = COLORS[n]; tX = Math.floor((TW - tPiece[0].length) / 2); tY = 0;
-  if (tCollide(tPiece, tX, tY)) { tEnd(); }
-}
-function tDraw() {
-  var y, x;
-  tCtx.fillStyle = '#050505'; tCtx.fillRect(0, 0, 240, 400);
-  for (y = 0; y < TH; y++) { for (x = 0; x < TW; x++) {
-    if (tBoard[y][x]) { tCtx.fillStyle = tBoard[y][x]; tCtx.fillRect(x * TB + 1, y * TB + 1, TB - 2, TB - 2); } } }
-  if (tAlive) {
-    tCtx.fillStyle = tCol;
-    for (y = 0; y < tPiece.length; y++) { for (x = 0; x < tPiece[y].length; x++) {
-      if (tPiece[y][x]) { tCtx.fillRect((tX + x) * TB + 1, (tY + y) * TB + 1, TB - 2, TB - 2); } } }
-  }
-}
-function tStop() { if (tTimer) { clearInterval(tTimer); tTimer = null; } tAlive = false; }
-function tetStop() { tStop(); }
-function tLock() {
-  var y, x, row, full, lines = 0;
-  for (y = 0; y < tPiece.length; y++) { for (x = 0; x < tPiece[y].length; x++) {
-    if (tPiece[y][x] && tY + y >= 0) { tBoard[tY + y][tX + x] = tCol; } } }
-  for (y = TH - 1; y >= 0; y--) {
-    full = true;
-    for (x = 0; x < TW; x++) { if (!tBoard[y][x]) { full = false; break; } }
-    if (full) { tBoard.splice(y, 1); row = []; for (x = 0; x < TW; x++) { row.push(0); } tBoard.unshift(row); lines++; y++; }
-  }
-  if (lines) { tScore += [0, 100, 300, 500, 800][lines] || 800; $('tetScore').innerHTML = tScore; }
-  tSpawn();
-}
-function tDown() {
-  if (!tAlive) { return; }
-  if (!tCollide(tPiece, tX, tY + 1)) { tY++; } else { tLock(); }
-  tDraw();
-}
-function tMove(dx) { if (tAlive && !tCollide(tPiece, tX + dx, tY)) { tX += dx; tDraw(); } }
-function tTurn() {
-  if (!tAlive) { return; }
-  var r = tRotate(tPiece), k = [0, -1, 1, -2, 2], i;
-  for (i = 0; i < k.length; i++) { if (!tCollide(r, tX + k[i], tY)) { tPiece = r; tX += k[i]; tDraw(); return; } }
-}
-function tEnd() {
-  tStop();
-  if (tScore > hi.tetris) { hi.tetris = tScore; saveHi(); }
-  window.petReward(Math.min(25, 5 + Math.floor(tScore / 50)));
-  tDraw();
-  tCtx.fillStyle = 'rgba(0,0,0,0.7)'; tCtx.fillRect(0, 0, 240, 400);
-  tCtx.fillStyle = '#ff4500'; tCtx.font = 'bold 24px Helvetica'; tCtx.textAlign = 'center';
-  tCtx.fillText('Конец! ' + tScore, 120, 200);
-}
-function tStart() {
-  tStop(); tBoard = tNewBoard(); tScore = 0; $('tetScore').innerHTML = '0'; tAlive = true; tSpawn();
-  if (tAlive) { tDraw(); tTimer = setInterval(tDown, 550); }
-}
-$('tL').onclick = function () { tMove(-1); };
-$('tR').onclick = function () { tMove(1); };
-$('tRot').onclick = tTurn;
-$('tD').onclick = tDown;
-$('tetGo').onclick = tStart;
-swipe(tCv, function (d) {
-  if (d === 'tap' || d === 'U') { tTurn(); } else if (d === 'L') { tMove(-1); } else if (d === 'R') { tMove(1); } else if (d === 'D') { tDown(); tDown(); }
+ const questions=[
+{t:"Какая династия правила Китаем с 1644 года?",o:["Мин","Цин","Хань","Тан"],a:1},
+{t:"Какая английская организация усилила своё влияние в Индии?",o:["Ост-Индская компания","Лига Наций","Ганзейский союз","Орден иезуитов"],a:0},
+{t:"Кто основал сёгунат в 1603 году?",o:["Муцухито","Токугава Иэясу","Мэттью Перри","Менелик II"],a:1},
+{t:"В каком году началась реставрация Мэйдзи?",o:["1603","1757","1868","1896"],a:2},
+{t:"Как назывался период правления сёгуната Токугава?",o:["Эдо","Мэйдзи","Цин","Просвещение"],a:0},
+{t:"Какой договор Персия подписала с Россией в 1828 году?",o:["Нанкинский","Туркманчайский","Версальский","Тильзитский"],a:1},
+{t:"В каком году открылся Суэцкий канал?",o:["1805","1842","1869","1896"],a:2},
+{t:"Какое событие произошло в Эфиопии в 1896 году?",o:["Битва при Адуа","Первая Опиумная война","Реставрация Мэйдзи","Восстание сипаев"],a:0},
+{t:"Какой стиль искусства ориентировался на античную гармонию и симметрию?",o:["Барокко","Классицизм","Готика","Рококо"],a:1},
+{t:"Какое изобретение сыграло важную роль в промышленном перевороте?",o:["Паровая машина","Телефон","Радио","Самолёт"],a:0}
+];
+
+function showError(message){$("error").textContent=message}
+
+$("loginForm").addEventListener("submit",function(e){
+ e.preventDefault();
+ const first=$("first").value.trim();
+ const last=$("last").value.trim();
+ const phone=$("phone").value.trim();
+ if(first.length<2||last.length<2){showError("Введи имя и фамилию (минимум 2 символа).");return}
+ const digits=phone.replace(/\D/g,"");
+ if(digits.length<10||digits.length>15){showError("Проверь номер телефона. Например: +996 555 123 456");return}
+ user={first,last,phone};
+ try{localStorage.setItem(USER_KEY,JSON.stringify(user))}catch(err){}
+ showApp();
 });
-$('tetBack').onclick = toGames;
-$('gTetris').onclick = function () { openGame('s-tetris'); tStart(); };
 
-// ----- ЛОВЕЦ ИСКР -----
-var spScore = 0, spLeft = 30, spTimer = null, spSpawn = null, spOn = false;
-function sparkStop() { if (spTimer) { clearInterval(spTimer); spTimer = null; } if (spSpawn) { clearTimeout(spSpawn); spSpawn = null; } spOn = false; }
-function spawnSpark() {
-  if (!spOn) { return; }
-  var area = $('sparkArea'), el = document.createElement('div');
-  var w = area.clientWidth, h = area.clientHeight;
-  var bad = Math.random() < 0.2;
-  el.className = 'sp';
-  el.innerHTML = bad ? '✖' : '✦';
-  if (bad) { el.style.background = '#555'; el.style.boxShadow = 'none'; }
-  el.style.left = (40 + Math.random() * (w - 80)) + 'px';
-  el.style.top = (40 + Math.random() * (h - 80)) + 'px';
-  var ttl = setTimeout(function () { if (el.parentNode) { el.parentNode.removeChild(el); } }, 900);
-  el.ontouchstart = el.onclick = function (e) {
-    if (e && e.preventDefault) { e.preventDefault(); }
-    if (!el.parentNode) { return; }
-    clearTimeout(ttl);
-    spScore += bad ? -2 : 1; if (spScore < 0) { spScore = 0; }
-    $('sparkScore').innerHTML = spScore;
-    el.parentNode.removeChild(el);
-  };
-  area.appendChild(el);
-  spSpawn = setTimeout(spawnSpark, 350 + Math.random() * 350);
+function showApp(){
+ $("loginScreen").classList.add("hidden");
+ $("app").classList.remove("hidden");
+ $("student").textContent=user.first+" "+user.last;
+ renderLessons();
+ renderJournal();
 }
-$('sparkGo').onclick = function () {
-  sparkStop(); $('sparkArea').innerHTML = ''; spScore = 0; spLeft = 30; spOn = true;
-  $('sparkScore').innerHTML = '0'; $('sparkTime').innerHTML = '30';
-  spawnSpark();
-  spTimer = setInterval(function () {
-    spLeft--; $('sparkTime').innerHTML = spLeft;
-    if (spLeft <= 0) {
-      sparkStop(); $('sparkArea').innerHTML = '<div style="padding-top:20vmin;font-size:26px;font-weight:800;color:#ff4500">Время! Искр: ' + spScore + '</div>';
-      if (spScore > hi.spark) { hi.spark = spScore; saveHi(); }
-      window.petReward(Math.min(25, 5 + spScore));
-    }
-  }, 1000);
-};
-$('sparkBack').onclick = toGames;
-$('gSpark').onclick = function () { openGame('s-spark'); $('sparkArea').innerHTML = '<div style="padding-top:20vmin;color:#888">Лови искры ✦, не трогай ✖. Нажми «Старт»</div>'; };
 
-// ----- ОГНЕННЫЕ ПАРЫ -----
-var memSym = ['🔥', '⚡', '★', '♥', '☾', '☀', '✿', '♪'], memCards, memOpen, memMoves, memLock, memFound;
-function memStart() {
-  var a = memSym.concat(memSym), i, j, t, html = '';
-  for (i = a.length - 1; i > 0; i--) { j = Math.floor(Math.random() * (i + 1)); t = a[i]; a[i] = a[j]; a[j] = t; }
-  memCards = a; memOpen = []; memMoves = 0; memLock = false; memFound = 0;
-  $('memMoves').innerHTML = '0';
-  for (i = 0; i < a.length; i++) { html += '<div class="mc" id="mc' + i + '" onclick="window.memTap(' + i + ')"><i></i></div>'; }
-  $('memGrid').innerHTML = html;
+function logout(){
+ if(started&&!finished&&!blocked){if(!confirm("Выйти во время теста? Результат будет аннулирован."))return;blockExam("Ученик вышел во время экзамена.")}
+ try{localStorage.removeItem(USER_KEY)}catch(e){}
+ location.reload();
 }
-window.memTap = function (i) {
-  var el = $('mc' + i);
-  if (memLock || el.className.indexOf('up') > -1 || el.className.indexOf('ok') > -1) { return; }
-  el.className = 'mc up'; el.getElementsByTagName('i')[0].innerHTML = memCards[i];
-  memOpen.push(i);
-  if (memOpen.length === 2) {
-    memMoves++; $('memMoves').innerHTML = memMoves; memLock = true;
-    var a = memOpen[0], b = memOpen[1];
-    setTimeout(function () {
-      if (memCards[a] === memCards[b]) {
-        $('mc' + a).className = 'mc ok'; $('mc' + b).className = 'mc ok'; memFound++;
-        if (memFound === memSym.length) {
-          if (!hi.mem || memMoves < hi.mem) { hi.mem = memMoves; saveHi(); }
-          window.petReward(Math.max(8, 30 - memMoves)); say('Ты запомнил всё! Ходов: ' + memMoves);
-        }
-      } else {
-        $('mc' + a).className = 'mc'; $('mc' + b).className = 'mc';
-        $('mc' + a).getElementsByTagName('i')[0].innerHTML = ''; $('mc' + b).getElementsByTagName('i')[0].innerHTML = '';
-      }
-      memOpen = []; memLock = false;
-    }, 700);
-  }
-};
-$('memGo').onclick = memStart;
-$('memBack').onclick = toGames;
-$('gMem').onclick = function () { openGame('s-mem'); memStart(); };
+$("exit").addEventListener("click",logout);
 
-// Кнопка «Играть» у питомца открывает игры
-$('bPlay').onclick = function () {
-  if (S.sleeping) { say(pick(PHRASES.sleep)); return; }
-  if (S.energy < 15) { say(pick(PHRASES.tired)); return; }
-  say(pick(PHRASES.play)); showScreen('s-games'); showHi();
-};
-showHi();
-  // ---------- ЗАПУСК ----------
-  renderAlarms(); renderNotes(); renderSchool(); updateClock(); render(); say(moodPhrase()); saveS(); applyKeep();
-  setInterval(function () { updateClock(); checkAlarms(); checkNotes(); }, 1000);
-  setInterval(function () { tick(1); S.last = new Date().getTime(); saveS(); render(); }, 60000);
-  setInterval(function () { if (Math.random() < 0.5 && $('s-pet').className.indexOf('on') > -1) { say(moodPhrase()); } }, 25000);
-  setInterval(function () { if ($('s-school').className.indexOf('on') > -1 && subMode === 'B' && document.activeElement.tagName !== 'INPUT') { renderSchool(); } }, 30000);
+function openPage(id){
+ document.querySelectorAll(".page").forEach(p=>p.classList.add("hidden"));
+ $(id).classList.remove("hidden");
+ document.querySelectorAll("nav button[data-page]").forEach(b=>b.classList.toggle("active",b.dataset.page===id));
+}
+document.querySelectorAll("nav button[data-page]").forEach(b=>b.addEventListener("click",()=>openPage(b.dataset.page)));
+
+function renderLessons(){
+ $("lessonList").innerHTML=lessons.map((l,i)=>`
+ <section class="card">
+  <button class="accordion" type="button" aria-expanded="false">Тема ${i+1}. ${l[0]}　＋</button>
+  <div class="content">${l[1]}</div>
+ </section>`).join("");
+ $("lessonList").querySelectorAll(".accordion").forEach(b=>b.addEventListener("click",()=>{
+  const c=b.nextElementSibling,open=c.classList.toggle("open");
+  b.setAttribute("aria-expanded",String(open));
+  b.textContent=b.textContent.replace(/[＋－]$/,"")+(open?"－":"＋");
+ }));
+}
+
+function renderQuestions(){
+ $("questions").innerHTML=questions.map((q,i)=>`
+ <div class="question">
+ <h3>Вопрос ${i+1} ${i<5?"(лёгкий · 5 баллов)":"(сложный · 10 баллов)"}</h3>
+ <p>${q.t}</p>
+ ${q.o.map((v,j)=>`<label class="answer"><input type="radio" name="q${i}" value="${j}"> ${v}</label>`).join("")}
+ </div>`).join("");
+}
+
+$("startExam").addEventListener("click",()=>{
+ if(started||finished||blocked)return;
+ started=true;
+ $("startExam").classList.add("hidden");
+ $("testForm").classList.remove("hidden");
+ $("result").classList.add("hidden");
+ $("cheat").classList.add("hidden");
+ renderQuestions();
+});
+
+document.addEventListener("visibilitychange",()=>{
+ if(document.visibilityState==="hidden"&&user&&started&&!finished&&!blocked){
+  blockExam("Обнаружено переключение вкладки или сворачивание браузера.");
+ }
+});
+function blockExam(reason){
+ if(blocked||finished)return;
+ blocked=true;started=false;finished=true;
+ $("testForm").classList.add("hidden");
+ $("startExam").classList.add("hidden");
+ $("cheat").classList.remove("hidden");
+ $("cheat").innerHTML="<h2>🚨 ЭКЗАМЕН ЗАБЛОКИРОВАН</h2><p>"+reason+"</p><h2>Оценка: 1 (ЧИТЕР)</h2><p>Баллы аннулированы.</p>";
+ const r={name:user.first+" "+user.last,score:0,grade:"1 (ЧИТЕР)",correct:0,wrong:0,skipped:10,cheated:true,date:new Date().toLocaleString("ru-RU")};
+ saveResult(r);renderJournal();
+}
+
+$("testForm").addEventListener("submit",function(e){
+ e.preventDefault();
+ if(!started||finished||blocked)return;
+ if(!confirm("Завершить тест? После отправки ответы нельзя изменить."))return;
+ let score=0,correct=0,wrong=0,skipped=0;
+ questions.forEach((q,i)=>{
+  const chosen=document.querySelector('input[name="q'+i+'"]:checked');
+  if(!chosen){skipped++;return}
+  if(Number(chosen.value)===q.a){correct++;score+=i<5?5:10}
+  else{wrong++;score+=i<5?-5:-8}
+ });
+ started=false;finished=true;
+ const grade=score>=55?"5":score>=30?"4":score>=5?"3":"2";
+ const r={name:user.first+" "+user.last,score,grade,correct,wrong,skipped,cheated:false,date:new Date().toLocaleString("ru-RU")};
+ saveResult(r);
+ $("testForm").classList.add("hidden");
+ $("result").classList.remove("hidden");
+ $("result").innerHTML=`<h2>Результат экзамена</h2><h1 style="color:#f07818">${score} баллов</h1><h2>Оценка: ${grade}</h2><p>Правильных: ${correct} · Неправильных: ${wrong} · Пропущено: ${skipped}</p><p>${r.name}<br>${r.date}</p><button id="send" class="primary">Отправить результат учителю в WhatsApp</button>`;
+ $("send").addEventListener("click",()=>sendWhatsApp(r));
+ renderJournal();
+});
+
+function getJournal(){
+ try{const j=JSON.parse(localStorage.getItem(JOURNAL_KEY)||"[]");return Array.isArray(j)?j:[]}catch(e){return []}
+}
+function saveResult(r){
+ const j=getJournal();j.unshift(r);
+ try{localStorage.setItem(JOURNAL_KEY,JSON.stringify(j))}catch(e){alert("Не удалось сохранить журнал браузера.")}
+}
+function renderJournal(){
+ if(!$("journal"))return;
+ const j=getJournal();
+ $("journal").innerHTML=j.length?j.map(r=>`<div style="padding:12px 0;border-bottom:1px solid #eee"><b>${escapeHTML(r.name)}</b><br><span style="color:#687386">${escapeHTML(r.date)} · ${r.score} баллов · Оценка ${escapeHTML(r.grade)}</span><br><button class="send-row" data-date="${escapeHTML(r.date)}" style="margin-top:8px;background:#e9edf5">Отчёт WhatsApp</button></div>`).join(""):"<p>Результатов пока нет.</p>";
+ $("journal").querySelectorAll(".send-row").forEach((b,i)=>b.addEventListener("click",()=>sendWhatsApp(j[i])));
+}
+function sendWhatsApp(r){
+ let phone=user.phone.replace(/\D/g,"");
+ const text=`HISTORY 8 — результат экзамена\nУченик: ${r.name}\nДата: ${r.date}\nБаллы: ${r.score}\nОценка: ${r.grade}\nПравильных: ${r.correct}\nНеправильных: ${r.wrong}\nПропущено: ${r.skipped}\n${r.cheated?"НАРУШЕНИЕ АНТИ-ЧИТА": "Экзамен завершён"}`;
+ window.open("https://wa.me/"+phone+"?text="+encodeURIComponent(text),"_blank");
+}
+$("clear").addEventListener("click",()=>{
+ if(confirm("Очистить журнал на этом устройстве?")){
+  localStorage.removeItem(JOURNAL_KEY);renderJournal();
+ }
+});
+$("export").addEventListener("click",()=>{
+ const j=getJournal();
+ if(!j.length){alert("Журнал пуст.");return}
+ const csv=["Имя;Дата;Баллы;Оценка;Правильных;Неправильных;Пропущено;Нарушение",...j.map(r=>[r.name,r.date,r.score,r.grade,r.correct,r.wrong,r.skipped,r.cheated?"Да":"Нет"].map(v=>'"'+String(v??"").replace(/"/g,'""')+'"').join(";"))].join("\n");
+ const url=URL.createObjectURL(new Blob(["\uFEFF"+csv],{type:"text/csv;charset=utf-8"}));
+ const a=document.createElement("a");a.href=url;a.download="history8-journal.csv";a.click();URL.revokeObjectURL(url);
+});
+function escapeHTML(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+ try{
+ const saved=localStorage.getItem(USER_KEY);
+ if(saved){
+  const parsed=JSON.parse(saved);
+  if(parsed&&parsed.first&&parsed.last&&parsed.phone){user=parsed;showApp()}
+ }
+}catch(e){localStorage.removeItem(USER_KEY)}
+
 })();
 </script>
 </body>
